@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}Formularios{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="forms-panel">
+    <section class="forms-list">
+      <div class="forms-header">
+        <h1>Formularios</h1>
+
+        <!-- Barra de Búsqueda Premium -->
+        <div class="search-container" style="flex: 1; max-width: 400px; margin-left: 20px;">
+          <form action="{{ url_for('forms') }}" method="get" class="search-form"
+            style="display: flex; align-items: center; gap: 10px;">
+            <div class="search-wrapper"
+              style="position: relative; display: flex; align-items: center; flex: 1; background: white; border: 1.5px solid #e2e8f0; border-radius: 30px; padding: 5px 5px 5px 15px; transition: all 0.3s ease;">
+              <input type="text" name="q" placeholder="Buscar formulario..." value="{{ q or '' }}" class="search-input"
+                style="border: none; outline: none; width: 100%; padding: 8px 0; font-size: 14px; color: #1e293b;">
+              <button type="submit" class="search-btn"
+                style="background: var(--primary); border: none; border-radius: 50%; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                <img src="{{ url_for('static', filename='images/ojo.png') }}" alt="Buscar"
+                  style="width: 18px; filter: brightness(0) invert(1);">
+              </button>
+            </div>
+            {% if q %}
+            <a href="{{ url_for('forms') }}" class="clear-search"
+              style="background: #f1f5f9; color: #64748b; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%; text-decoration: none; font-size: 12px; font-weight: bold;">✕</a>
+            {% endif %}
+          </form>
+        </div>
+
+        {% if is_admin %}
+        <button id="fab-open" class="fab-inline" title="Añadir formulario" aria-label="Añadir formulario">
+          <img src="{{ url_for('static', filename='images/mas.png') }}" alt="Añadir">
+        </button>
+        {% endif %}
+      </div>
+      {% if not forms %}
+      <p>No hay formularios disponibles.</p>
+      {% else %}
+      <div class="forms-grid">
+        {% for f in forms %}
+        <article class="form-card {{ 'is-hidden' if not f.visible }}" id="form-{{ f.ID }}">
+          <div class="form-card-head">
+            <h2 class="form-title">{{ f.nombre }}</h2>
+            {% if is_admin %}
+            <div class="form-actions">
+              <form method="post" action="/formularios/{{ f.ID }}/toggle_visibility" class="inline-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-visibility" aria-label="Cambiar visibilidad">
+                  {% if f.visible %}
+                  <img src="{{ url_for('static', filename='images/ojo.png') }}" alt="Visible" class="icon-visibility" />
+                  {% else %}
+                  <img src="{{ url_for('static', filename='images/ojo_cerrado.png') }}" alt="No visible"
+                    class="icon-visibility" />
+                  {% endif %}
+                </button>
+              </form>
+              <a class="btn btn-edit" href="/form-builder?form_id={{ f.ID }}" target="_blank" rel="noopener noreferrer"
+                aria-label="Modificar">
+                <img src="{{ url_for('static', filename='images/lapiz.png') }}" alt="Editar" class="icon-edit" />
+              </a>
+              <form method="post" action="/formularios/{{ f.ID }}/delete" class="inline-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-delete" aria-label="Borrar">
+                  <img src="{{ url_for('static', filename='images/basura.png') }}" alt="Borrar" class="icon-delete" />
+                </button>
+              </form>
+              <a class="btn btn-responses" href="{{ url_for('respuestas_por_formulario', form_id=f.ID) }}"
+                title="Ver respuestas del formulario">Ver respuestas</a>
+              <a class="btn btn-stats" href="/estadisticas-formulario?form_id={{ f.ID }}"
+                title="Ver estadísticas agregadas">Estadísticas</a>
+              <form method="post" action="/formularios/{{ f.ID }}/duplicate" class="inline-form"
+                onsubmit="return confirm('¿Duplicar este formulario?');">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-duplicate"
+                  title="Crear una copia exacta de este formulario">Duplicar</button>
+              </form>
+              <button class="btn btn-toggle" data-target="#details-{{ f.ID }}" aria-expanded="false">Detalles</button>
+            </div>
+            {% endif %}
+          </div>
+
+          <div class="form-card-body">
+            {% if is_admin %}
+            <div class="form-details" id="details-{{ f.ID }}">
+              <p><strong>Creado:</strong> {{ f.fecha_creado or '—' }}</p>
+              <p><strong>Modificado:</strong> {{ f.fecha_mod or '—' }}</p>
+              <p><strong>Ruta:</strong> <code>{{ f.ruta_form }}</code></p>
+              <p><strong>Creado por:</strong> {{ f.user_name | default('—') }}</p>
+              <p><strong>ID:</strong> {{ f.ID }} — <strong>Visible:</strong> {{ 'Sí' if f.visible else 'No' }}</p>
+            </div>
+            {% endif %}
+
+            <!-- Descripción y botón responder (visible para todos) -->
+            <div class="form-card-footer">
+              <p class="form-description">{{ f.descripcion or 'Pulsa "Responder" para completar este formulario' }}</p>
+              <a href="/responder-formulario?form_id={{ f.ID }}" target="_blank" rel="noopener noreferrer"
+                class="btn btn-responder">
+                Responder
+              </a>
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      {% endif %}
+      <!-- Modal create form -->
+      {% if is_admin %}
+      <div class="modal-backdrop" id="modal-backdrop" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+          <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Nuevo formulario</h3>
+            <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
+          </div>
+          <div class="modal-body">
+            <form id="create-form" method="post" action="{{ url_for('create_form') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <label for="form-nombre">Nombre del formulario</label>
+              <input id="form-nombre" name="nombre" type="text" required maxlength="150"
+                placeholder="Ej: Encuesta 2025">
+
+              <div class="modal-actions">
+                <button type="button" class="btn-secondary-modal" id="modal-cancel">Cancelar</button>
+                <button type="submit" class="btn-primary">Crear</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </section>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+{% endblock %}

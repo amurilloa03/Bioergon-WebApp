@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "survey-core": "^2.3.15",
+    "survey-creator-react": "^2.3.15"
+  }
+}

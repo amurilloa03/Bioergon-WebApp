@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Contacto - Bioergon{% endblock %}
+
+{% block content %}
+<div class="container forms-panel">
+    <section class="forms-list">
+        <div class="forms-header">
+            <h1>Contacto — <span class="text-primary">Bioergon</span></h1>
+        </div>
+
+        <div class="index-card" style="margin: 0 auto;">
+            {% if enviado %}
+            <div class="mensaje-exito">
+                ✅ ¡Mensaje enviado con éxito!<br>Nos pondremos en contacto contigo pronto.
+            </div>
+            <br>
+            <div style="text-align: center;">
+                <a href="{{ url_for('contacto') }}" class="btn btn-primary" style="text-decoration: none;">Enviar otro
+                    mensaje</a>
+            </div>
+            {% else %}
+            <p style="text-align: center; color: #64748b; margin-bottom: 24px;">Escríbenos y resolveremos tus dudas lo
+                antes posible.</p>
+
+            <form action="{{ url_for('contacto') }}" method="POST" class="login-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <label for="nombre">Nombre completo</label>
+                <input type="text" id="nombre" name="nombre" class="login-input" required placeholder="Ej: Laura Gómez">
+
+                <label for="email" style="margin-top: 10px;">Correo electrónico</label>
+                <input type="email" id="email" name="email" class="login-input" required
+                    placeholder="ejemplo@correo.com">
+
+                <label for="mensaje" style="margin-top: 10px;">Tu mensaje</label>
+                <textarea id="mensaje" name="mensaje" class="login-input" rows="5" required
+                    placeholder="Escribe aquí tu duda o consulta..." style="resize: vertical;"></textarea>
+
+                <div class="login-actions" style="margin-top: 20px;">
+                    <button type="submit" class="login-button">✉️ Enviar Mensaje</button>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}

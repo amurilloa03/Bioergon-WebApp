@@ -1,0 +1,303 @@
+{% extends "base.html" %}
+
+{% block title %}Respuestas{% endblock %}
+
+{% block content %}
+<main class="container">
+  <div class="forms-panel">
+    <section class="forms-list">
+      <div class="forms-header">
+        <div class="header-title-area">
+          {% if form_filter_name %}
+          <h1>Respuestas: <span class="text-primary">{{ form_filter_name }}</span></h1>
+          {% else %}
+          <h1>Listado de Respuestas</h1>
+          {% endif %}
+        </div>
+
+      </div>
+
+      <!-- Panel de Búsqueda Avanzada y Exportación -->
+      <section class="search-panel">
+        {% if is_admin and form_filter_id %}
+        <div class="search-panel-header">
+          <div class="form-actions" style="margin-top: 0; margin-bottom: 20px; width: 100%; justify-content: flex-end;">
+            <a href="/exportar-csv/{{ form_filter_id }}" class="btn btn-export btn-csv">
+              📊 Exportar a Excel (CSV)
+            </a>
+            <button id="export-gmail-btn" class="btn btn-export btn-gmail">
+              📧 Exportar a Gmail
+            </button>
+          </div>
+        </div>
+        {% endif %}
+
+        <form action="/respuestas" method="GET">
+          <div class="filter-group">
+            <label for="q_form">Nombre del Formulario</label>
+            <input type="text" name="q_form" id="q_form" value="{{ filters.q_form if filters else '' }}"
+              placeholder="Ej: Encuesta...">
+          </div>
+
+          {% if is_admin %}
+          <div class="filter-group">
+            <label for="q_user">Usuario (Nombre)</label>
+            <input type="text" name="q_user" id="q_user" value="{{ filters.q_user if filters else '' }}"
+              placeholder="Ej: Juan...">
+          </div>
+          {% endif %}
+
+          <div class="filter-group">
+            <label for="d_from">Desde</label>
+            <input type="date" name="d_from" id="d_from" value="{{ filters.d_from if filters else '' }}">
+          </div>
+
+          <div class="filter-group">
+            <label for="d_to">Hasta</label>
+            <input type="date" name="d_to" id="d_to" value="{{ filters.d_to if filters else '' }}">
+          </div>
+
+          <div class="filter-actions">
+            <button type="submit" class="btn btn-responder" style="flex: 1;">
+              🔍 Filtrar
+            </button>
+            <a href="/respuestas" class="btn btn-secondary">
+              🔄 Limpiar
+            </a>
+          </div>
+        </form>
+      </section>
+
+
+      {% if not respuestas %}
+      <p>No hay respuestas disponibles.</p>
+      {% else %}
+      <div class="forms-grid">
+        {% for r in respuestas %}
+        <article class="form-card" id="respuesta-{{ r.ID }}">
+          <div class="form-card-head">
+            <h2 class="form-title">{{ r.form_name }}</h2>
+            <div class="form-actions">
+              <button class="btn btn-responses ver-respuesta-btn" data-respuesta-id="{{ r.ID }}"
+                data-ruta="{{ r.ruta_respuesta }}">
+                Ver respuesta
+              </button>
+              {% if is_admin %}
+              <span class="user-id-badge">ID Usuario: {{ r.user_id }}</span>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-card-body">
+            <div class="form-details show">
+              {% if is_admin %}
+              <p><strong>Ruta de respuesta:</strong> <a href="{{ r.ruta_respuesta }}">{{ r.ruta_respuesta }}</a></p>
+              {% endif %}
+              <p><strong>Enviada:</strong> {{ r.fecha_envio }}</p>
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="modal-backdrop" id="modal-respuesta" aria-hidden="true">
+        <div class="modal-content modal-respuesta-content" role="dialog" aria-modal="true">
+          <div class="modal-header">
+            <h3 class="modal-title" id="modal-respuesta-title">Respuesta: Cargando...</h3>
+            <button class="modal-close" id="modal-respuesta-close" aria-label="Cerrar">✕</button>
+          </div>
+          <div class="modal-body modal-respuesta-body">
+            <div id="respuesta-contenido" style="max-height: 500px; overflow-y: auto;">
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" id="modal-respuesta-close-btn">Cerrar</button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+<script>
+  // Helper: crea un elemento con atributos y contenido seguro
+  function safeEl(tag, attrs, textContent) {
+    const el = document.createElement(tag);
+    if (attrs) Object.entries(attrs).forEach(([k, v]) => {
+      if (k === 'className') el.className = v;
+      else el.setAttribute(k, v);
+    });
+    if (textContent !== undefined) el.textContent = textContent;
+    return el;
+  }
+
+  // Manejar click en botones "Ver respuesta"
+  document.querySelectorAll('.ver-respuesta-btn').forEach(btn => {
+    btn.addEventListener('click', async function () {
+      const respuestaId = this.dataset.respuestaId;
+      const ruta = this.dataset.ruta;
+      const nombreArchivo = ruta.split('/').pop();
+
+      const modal = document.getElementById('modal-respuesta');
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden', 'false');
+
+      try {
+        const response = await fetch(`/api/respuestas/archivo/${encodeURIComponent(nombreArchivo)}`);
+        const data = await response.json();
+
+        // Actualizar título (textContent = XSS-safe)
+        document.getElementById('modal-respuesta-title').textContent = `Respuesta: ${data.title || 'Formulario'}`;
+
+        const contenido = document.getElementById('respuesta-contenido');
+        contenido.innerHTML = '';
+
+        // Título y descripción (safe DOM construction)
+        if (data.title) {
+          const titleDiv = safeEl('div', { className: 'respuesta-form-header' });
+          const h4 = safeEl('h4', { style: 'margin:0 0 10px 0;color:#333;font-size:1.2rem' }, data.title);
+          titleDiv.appendChild(h4);
+          if (data.description) {
+            const desc = safeEl('p', { style: 'color:#666;margin:0 0 20px 0' }, data.description);
+            titleDiv.appendChild(desc);
+          }
+          contenido.appendChild(titleDiv);
+        }
+
+        // Preguntas con respuestas (safe DOM construction)
+        if (data.questions && data.questions.length > 0) {
+          const formDiv = safeEl('div', { className: 'respuesta-form' });
+
+          data.questions.forEach((question, index) => {
+            const questionDiv = safeEl('div', { className: 'respuesta-pregunta' });
+
+            // Header
+            const headerDiv = safeEl('div', { className: 'respuesta-pregunta-header' });
+            const strong = safeEl('strong', {}, `${index + 1}. ${question.text || 'Pregunta ' + (index + 1)}`);
+            headerDiv.appendChild(strong);
+            if (question.required) {
+              const req = safeEl('span', { style: 'color:#ff6b6b;margin-left:5px' }, '*');
+              headerDiv.appendChild(req);
+            }
+            questionDiv.appendChild(headerDiv);
+
+            // Tipo
+            const tipoDiv = safeEl('div', { className: 'respuesta-pregunta-tipo' });
+            tipoDiv.appendChild(safeEl('small', { style: 'color:#999' }, `Tipo: ${question.type}`));
+            questionDiv.appendChild(tipoDiv);
+
+            // Respuesta (safe)
+            const answerDiv = safeEl('div', { className: 'respuesta-pregunta-answer' });
+            const answer = data.respuestas[question.id];
+
+            if (answer !== undefined && answer !== null) {
+              const answerText = Array.isArray(answer) ? answer.join(', ') : String(answer);
+              answerDiv.appendChild(document.createTextNode(answerText));
+
+              // Botón SVG para Mapa Muscular
+              if (question.type === 'muscle-map' && answerText.trim()) {
+                const svgContainer = safeEl('div', { style: 'margin-top:15px' });
+                const svgLink = safeEl('a', {
+                  href: '/exportar-svg/' + encodeURIComponent(answerText.trim()),
+                  className: 'btn',
+                  style: 'background-color:#8e44ad;color:white;padding:6px 12px;text-decoration:none;border-radius:4px;display:inline-block;font-size:0.9em'
+                }, '📥 Descargar Mapa Corporal (SVG)');
+                svgContainer.appendChild(svgLink);
+                answerDiv.appendChild(svgContainer);
+              }
+            } else {
+              const noAnswer = safeEl('em', { style: 'color:#ccc' }, '(Sin respuesta)');
+              answerDiv.appendChild(noAnswer);
+            }
+            questionDiv.appendChild(answerDiv);
+            formDiv.appendChild(questionDiv);
+          });
+
+          contenido.appendChild(formDiv);
+        }
+
+        // Fecha de respuesta
+        if (data.fecha_respuesta) {
+          const infoDiv = safeEl('div', { className: 'respuesta-info' });
+          const hr = document.createElement('hr');
+          hr.style.cssText = 'margin:20px 0;border:none;border-top:1px solid #e0e0e0';
+          infoDiv.appendChild(hr);
+          const p = safeEl('p', { style: 'color:#666;font-size:0.9rem;margin:0' });
+          p.appendChild(safeEl('strong', {}, 'Fecha de respuesta: '));
+          p.appendChild(document.createTextNode(new Date(data.fecha_respuesta).toLocaleString('es-ES')));
+          infoDiv.appendChild(p);
+          contenido.appendChild(infoDiv);
+        }
+
+      } catch (error) {
+        console.error('Error cargando respuesta:', error);
+        const errP = safeEl('p', { style: 'color:#ff6b6b' }, 'Error al cargar la respuesta');
+        document.getElementById('respuesta-contenido').innerHTML = '';
+        document.getElementById('respuesta-contenido').appendChild(errP);
+      }
+    });
+  });
+
+  // Manejar cierre de modal
+  document.getElementById('modal-respuesta-close').addEventListener('click', function () {
+    const modal = document.getElementById('modal-respuesta');
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden', 'true');
+  });
+
+  document.getElementById('modal-respuesta-close-btn').addEventListener('click', function () {
+    const modal = document.getElementById('modal-respuesta');
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden', 'true');
+  });
+
+  document.getElementById('modal-respuesta').addEventListener('click', function (e) {
+    if (e.target === this) {
+      this.classList.remove('show');
+      this.setAttribute('aria-hidden', 'true');
+    }
+  });
+
+  // Exportar a Gmail
+  const exportGmailBtn = document.getElementById('export-gmail-btn');
+  if (exportGmailBtn) {
+    exportGmailBtn.addEventListener('click', async function () {
+      const email = prompt("Introduce el email de destino para recibir el resumen de respuestas:");
+      if (!email) return;
+
+      const formId = "{{ form_filter_id }}";
+
+      try {
+        this.disabled = true;
+        this.textContent = "⌛ Enviando...";
+
+        const response = await fetch(`/api/exportar-gmail/${formId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('meta[name=csrf-token]')?.content || ''
+          },
+          body: JSON.stringify({ email: email })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          alert("✅ " + data.message);
+        } else {
+          alert("❌ Error: " + data.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert("❌ Error al conectar con el servidor");
+      } finally {
+        this.disabled = false;
+        this.textContent = "📧 Exportar a Gmail";
+      }
+    });
+  }
+</script>
+{% endblock %}

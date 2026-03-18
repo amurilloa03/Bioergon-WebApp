@@ -1,0 +1,39 @@
+<div class="site-header-inner">
+  <div class="logo">
+    <a href="{{ url_for('index') }}">
+      <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo" />
+    </a>
+  </div>
+
+  <nav class="main-nav" role="navigation" aria-label="Menú principal">
+    {# Mostrar el botón 'Formularios' solo si NO estamos en la página de formularios #}
+    {% if not ((request.endpoint is defined and request.endpoint == 'forms') or (current_page is defined and
+    current_page == 'forms')) %}
+    <a class="nav-btn" href="{{ url_for('forms') }}">Formularios</a>
+    {% endif %}
+
+    <a class="nav-btn" href="{{ url_for('contacto') }}"> 📧 Contacto</a>
+
+    {% if session.get('is_admin') %}
+    <a class="nav-btn" href="{{ url_for('usuarios') }}">👥 Usuarios</a>
+    <a class="nav-btn" href="/admin/mantenimiento" title="Limpiar archivos huérfanos">🛠️ Mantenimiento</a>
+    {% endif %}
+
+    {# Mostrar logout y perfil solo si hay sesión iniciada #}
+    {% if session.get('user_id') %}
+    {# Botón 'Inicio' como imagen separada de los demás botones: cierra sesión y vuelve a inicio #}
+    <a class="home-link" href="{{ url_for('logout') }}" aria-label="Cerrar sesión">
+      <img class="home-img" src="{{ url_for('static', filename='images/exit.png') }}" alt="Volver al inicio">
+    </a>
+    {% endif %}
+    {# Botón de perfil a la derecha del logout #}
+    <a class="profile-link" href="{{ url_for('perfil') }}" aria-label="Perfil">
+      {% set nav_avatar = get_user_avatar(session.get('user_id')) %}
+      {% if nav_avatar %}
+      <img class="profile-img" src="{{ nav_avatar }}" alt="Perfil" style="border-radius:50%; object-fit:cover;">
+      {% else %}
+      <img class="profile-img" src="{{ url_for('static', filename='images/usuario.png') }}" alt="Perfil">
+      {% endif %}
+    </a>
+  </nav>
+</div>

@@ -1,0 +1,709 @@
+/* Form Builder Premium Styles */
+
+:root {
+    /* Variables base (estándar) */
+    --primary: #667eea;
+    --primary-hover: #5a67d8;
+    --secondary: #2d3748;
+    --danger: #e53e3e;
+
+    /* Superficies y Cristal */
+    --glass-bg: rgba(255, 255, 255, 0.9);
+    --glass-border: rgba(226, 232, 240, 0.8);
+    --glass-blur: blur(16px);
+
+    /* Sombras */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+    /* Otros */
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --container-width: 1400px;
+}
+
+/* =========================================
+   TEMAS (Sobrescriben las variables root)
+   ========================================= */
+
+.theme-default {
+    background-color: #f0f2f5;
+}
+
+.theme-dark {
+    --primary: #bb86fc;
+    --primary-hover: #9c27b0;
+    --secondary: #e2e8f0;
+    --glass-bg: rgba(30, 41, 59, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    background-color: #0f172a;
+    color: #f8fafc;
+}
+
+.theme-dark .preview-card,
+.theme-dark .fb-question-item,
+.theme-dark .fb-input {
+    background: #1e293b;
+    border-color: #334155;
+    color: #f8fafc;
+}
+
+.theme-dark .fb-title-input {
+    color: #f8fafc;
+}
+
+.theme-dark .fb-question-text {
+    color: #f8fafc;
+}
+
+.theme-nature {
+    --primary: #2d6a4f;
+    --primary-hover: #1b4332;
+    --secondary: #081c15;
+    --glass-bg: rgba(241, 248, 233, 0.9);
+    --glass-border: rgba(163, 177, 138, 0.3);
+    background-color: #d8f3dc;
+    color: #1b4332;
+}
+
+.theme-nature .preview-card {
+    background: #fdfaf6;
+}
+
+.theme-purple {
+    --primary: #8e44ad;
+    --primary-hover: #732d91;
+    --secondary: #2c1338;
+    --glass-bg: rgba(253, 244, 255, 0.9);
+    --glass-border: rgba(216, 180, 226, 0.4);
+    background-color: #f3e5f5;
+    color: #4a154b;
+}
+
+.theme-ocean {
+    --primary: #0077b6;
+    --primary-hover: #023e8a;
+    --secondary: #03045e;
+    --glass-bg: rgba(224, 247, 250, 0.9);
+    --glass-border: rgba(144, 224, 239, 0.4);
+    background-color: #caf0f8;
+    color: #002855;
+}
+
+.theme-sunset {
+    --primary: #ff5a5f;
+    --primary-hover: #e0484d;
+    --secondary: #3b2426;
+    --glass-bg: rgba(255, 252, 250, 0.95);
+    --glass-border: rgba(255, 186, 186, 0.5);
+    background-color: #ffdacc;
+    color: #5c181b;
+}
+
+.theme-cherry {
+    --primary: #ff9ebb;
+    --primary-hover: #e57a9b;
+    --secondary: #4a2732;
+    --glass-bg: rgba(255, 250, 252, 0.95);
+    --glass-border: rgba(255, 192, 203, 0.5);
+    background-color: #fce4ec;
+    color: #611f32;
+}
+
+.theme-earth {
+    --primary: #8d6e63;
+    --primary-hover: #6d4c41;
+    --secondary: #3e2723;
+    --glass-bg: rgba(252, 250, 248, 0.95);
+    --glass-border: rgba(215, 204, 200, 0.6);
+    background-color: #d7ccc8;
+    color: #3e2723;
+}
+
+.theme-midnight {
+    --primary: #4fc3f7;
+    --primary-hover: #03a9f4;
+    --secondary: #e0f7fa;
+    --glass-bg: rgba(15, 23, 42, 0.85);
+    --glass-border: rgba(79, 195, 247, 0.2);
+    background-color: #0f172a;
+    color: #f8fafc;
+}
+
+.theme-midnight .preview-card,
+.theme-midnight .fb-question-item,
+.theme-midnight .fb-input {
+    background: #1e293b;
+    border-color: #334155;
+    color: #f8fafc;
+}
+
+.theme-midnight .fb-title-input,
+.theme-midnight .fb-question-text {
+    color: #f8fafc;
+}
+
+.theme-sunny {
+    --primary: #f59e0b;
+    --primary-hover: #d97706;
+    --secondary: #713f12;
+    --glass-bg: rgba(255, 254, 250, 0.95);
+    --glass-border: rgba(253, 230, 138, 0.6);
+    background-color: #fde68a;
+    color: #713f12;
+}
+
+/* ========================================= */
+
+.form-builder-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    transition: background-color 0.4s ease;
+    position: relative;
+    padding-top: 20px;
+}
+
+/* Header de construcción premium */
+.fb-header {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    margin: 0 20px 20px 20px;
+    border-radius: var(--radius-lg);
+    padding: 16px 32px;
+    box-shadow: var(--shadow-md);
+    position: sticky;
+    top: 20px;
+    z-index: 100;
+}
+
+.fb-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fb-header h1 {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--secondary);
+    letter-spacing: -0.025em;
+    margin: 0;
+}
+
+.fb-header-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.fb-btn-save-header {
+    background: var(--primary);
+    color: white;
+    padding: 12px 28px;
+    border-radius: 14px;
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    transition: all 0.2s;
+}
+
+.fb-btn-save-header:hover:not(:disabled) {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+}
+
+/* Layout Principal */
+.fb-container {
+    display: grid;
+    grid-template-columns: 240px 1fr 300px;
+    gap: 24px;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding-bottom: 40px;
+}
+
+/* Barras laterales Premium */
+.fb-sidebar-left,
+.fb-sidebar-right {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-md);
+    height: fit-content;
+    position: sticky;
+    top: 120px;
+    transition: all 0.3s ease;
+}
+
+.fb-sidebar-left h3,
+.fb-sidebar-right h3 {
+    font-size: 14px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--secondary);
+    margin-bottom: 20px;
+    opacity: 0.6;
+}
+
+/* Panel de Temas */
+.fb-themes-section {
+    margin-top: 32px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding-top: 20px;
+}
+
+.fb-themes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.fb-theme-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-sm);
+}
+
+.fb-theme-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.fb-theme-btn.active {
+    border-color: var(--primary);
+    background: rgba(var(--primary-rgb, 99, 102, 241), 0.05);
+}
+
+.fb-theme-preview {
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--theme-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.fb-theme-swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.fb-theme-btn span {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--secondary);
+    text-align: center;
+}
+
+/* Botones de Tipos de Pregunta */
+.fb-type-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    padding: 12px 14px;
+    border-radius: 12px;
+    color: var(--secondary);
+    font-weight: 600;
+    transition: all 0.2s;
+    margin-bottom: 8px;
+}
+
+.fb-type-btn:hover {
+    border-color: var(--primary);
+    transform: translateX(4px);
+    box-shadow: var(--shadow-md);
+    color: var(--primary);
+}
+
+.fb-type-emoji {
+    font-size: 18px;
+    opacity: 0.8;
+}
+
+/* Panel Central (Editor) */
+.fb-center {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.3s ease;
+}
+
+/* Fix for react-beautiful-dnd offset bug */
+body.is-dragging .fb-center,
+body.is-dragging .fb-sidebar-left,
+body.is-dragging .fb-sidebar-right,
+body.is-dragging .fb-header {
+    backdrop-filter: none !important;
+    transition: none !important;
+    transform: none !important;
+}
+
+.fb-title-input {
+    font-size: 32px;
+    font-weight: 800;
+    border: none;
+    border-bottom: 3px solid var(--glass-border);
+    background: transparent;
+    color: var(--secondary);
+    width: 100%;
+    padding-bottom: 12px;
+    transition: border-color 0.3s, color 0.3s;
+}
+
+.fb-title-input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.fb-description-input {
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 15px;
+    margin-top: 20px;
+    width: 100%;
+    color: inherit;
+    font-family: inherit;
+}
+
+/* Tarjetas de Pregunta en el Editor */
+.fb-question-item {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 20px;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-sm);
+}
+
+.fb-question-item:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+}
+
+.fb-question-item.selected {
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.fb-question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fb-question-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.fb-drag-handle {
+    cursor: grab;
+    color: #cbd5e1;
+    font-size: 20px;
+    padding: 0 4px;
+    user-select: none;
+    transition: color 0.2s;
+}
+
+.fb-drag-handle:hover {
+    color: var(--primary);
+}
+
+.fb-drag-handle:active {
+    cursor: grabbing;
+}
+
+.fb-question-item.dragging {
+    background: var(--glass-bg);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-xl);
+    opacity: 0.95;
+    z-index: 1000;
+    width: auto !important;
+    min-width: 500px;
+    /* Or whatever roughly matches the container */
+    box-sizing: border-box;
+    /* Asegura que la tarjeta no se ensanche al salir del flujo normal */
+}
+
+.fb-question-number {
+    background: var(--primary);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fb-question-type-tag {
+    background: #eff6ff;
+    color: #3b82f6;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+
+.fb-question-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--secondary);
+    margin: 16px 0 8px 0;
+}
+
+/* Editor de Pregunta (Lado Derecho) */
+.fb-input {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14px;
+    width: 100%;
+    color: inherit;
+    margin-top: 8px;
+}
+
+.fb-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    outline: none;
+}
+
+
+
+/* Versiones / Historial */
+.fb-btn-history {
+    background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%) !important;
+    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3) !important;
+}
+
+/* Versiones / Historial Premium */
+.fb-versions-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fb-versions-content {
+    background: white;
+    width: 90%;
+    max-width: 540px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.fb-versions-header {
+    background: #f8fafc;
+    padding: 24px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.fb-versions-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--secondary);
+}
+
+.fb-versions-list {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.fb-version-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s;
+}
+
+.fb-version-item:hover {
+    border-color: var(--primary);
+    background: #f5f7ff;
+    transform: translateX(4px);
+}
+
+.fb-version-date {
+    font-weight: 700;
+    color: var(--secondary);
+    font-size: 14px;
+}
+
+.fb-version-size {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.fb-btn-restore {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.fb-btn-restore:hover {
+    background: var(--primary-hover);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+}
+
+.fb-versions-footer {
+    padding: 24px;
+    background: #fefce8;
+    border-top: 1px solid #fef08a;
+    font-size: 13px;
+    color: #854d0e;
+}
+
+.fb-btn-clear-history {
+    background: #fee2e2;
+    color: var(--danger);
+    border: 1px solid #fecaca;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 12px;
+    width: 100%;
+    transition: all 0.2s;
+}
+
+.fb-btn-clear-history:hover {
+    background: var(--danger);
+    color: white;
+}
+
+/* Preview Mode Premium */
+.fb-preview-container {
+    padding: 40px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.preview-card {
+    background: var(--glass-bg);
+    border-radius: 24px;
+    padding: 48px;
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--glass-border);
+}
+
+.preview-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--secondary);
+    margin-bottom: 12px;
+    letter-spacing: -0.025em;
+}
+
+.preview-description {
+    font-size: 16px;
+    color: #64748b;
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.preview-input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1.5px solid var(--glass-border);
+    border-radius: 14px;
+    font-size: 15px;
+    transition: all 0.2s;
+    background: rgba(255, 255, 255, 0.6);
+    color: inherit;
+}
+
+.preview-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    outline: none;
+}
+
+.preview-submit-btn {
+    background: var(--primary);
+    color: white;
+    padding: 16px 32px;
+    border-radius: 16px;
+    font-weight: 800;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    margin-top: 32px;
+    box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
+    transition: all 0.2s;
+}
+
+.preview-submit-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.5);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

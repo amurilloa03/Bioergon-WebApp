@@ -1,0 +1,43 @@
+# ============================================
+# DEPENDENCIAS PYTHON - Backend (Flask)
+# ============================================
+
+# Web Framework
+Flask>=2.3.0
+Flask-SQLAlchemy>=3.0.0
+Flask-WTF>=1.2.0
+
+# Database ORM
+SQLAlchemy>=2.0.0
+psycopg2-binary>=2.9.9
+
+# Authentication & Security
+PyMySQL>=1.1.0
+passlib>=1.7.4
+pbkdf2>=1.3
+werkzeug>=2.3.0
+Authlib>=1.3.0
+requests>=2.31.0
+
+
+# Utilities
+python-dotenv>=1.0.0
+gunicorn>=21.2.0
+supabase>=2.0.0
+
+# ============================================
+# DEPENDENCIAS NODE/REACT - Frontend
+# ============================================
+# Las dependencias de React están en form_builder/package.json
+# Incluye:
+#   - React 19.2.0
+#   - React-DOM 19.2.0
+#   - React-Scripts 5.0.1
+#   - SurveyJS (survey-core, survey-creator-react)
+#   - Testing libraries
+#
+# Para instalar Node dependencies:
+#   cd form_builder
+#   npm install
+#   npm run build
+# ============================================

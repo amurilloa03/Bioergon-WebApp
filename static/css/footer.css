@@ -1,0 +1,157 @@
+/* Footer specific styles - Modern premium redesign */
+
+footer {
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(10px);
+    color: #f8fafc;
+    padding-top: 5rem;
+    padding-bottom: 2.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+}
+
+.footer-section h3 {
+    color: #3b82f6;
+    /* Modern blue */
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.footer-brand p {
+    color: #94a3b8;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-links a {
+    color: #94a3b8;
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: inline-block;
+}
+
+.footer-links a:hover {
+    color: #3b82f6;
+    transform: translateX(5px);
+}
+
+.socials {
+    display: flex;
+    gap: 1.2rem;
+    margin-top: 1rem;
+}
+
+.social-link img {
+    height: 32px;
+    width: auto;
+    filter: grayscale(1) brightness(1.5);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.social-link:hover img {
+    filter: grayscale(0) brightness(1);
+    transform: translateY(-5px) scale(1.1);
+}
+
+.footer-bottom {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    footer {
+        padding-top: 3rem;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2.5rem;
+    }
+
+    .socials {
+        justify-content: center;
+    }
+
+    .footer-links a:hover {
+        transform: scale(1.05);
+    }
+}
+
+/* Compact version for Login/Register pages */
+.footer-compact {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+}
+
+.footer-compact-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 1.5rem;
+}
+
+.footer-compact-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-compact-links a {
+    color: #64748b;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: color 0.2s ease;
+}
+
+.footer-compact-links a:hover {
+    color: #3b82f6;
+}
+
+.footer-compact-copy {
+    color: #475569;
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+@media (min-width: 768px) {
+    .footer-compact-content {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}

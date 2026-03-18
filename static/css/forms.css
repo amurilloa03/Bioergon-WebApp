@@ -1,0 +1,521 @@
+/* Rediseño Premium del Listado de Formularios */
+
+.forms-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    max-width: var(--container-width);
+    margin: 0 auto;
+}
+
+.forms-panel {
+    width: 100%;
+    /* No necesitamos fondo sólido aquí, usamos el global */
+}
+
+/* Título y Cabecera */
+.forms-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 32px;
+}
+
+.forms-header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--secondary);
+    margin: 0;
+    letter-spacing: -0.025em;
+}
+
+/* Botón flotante/añadir premium */
+.fab-inline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-md);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fab-inline:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.fab-inline img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1);
+}
+
+/* Cuadrícula de Formularios */
+.forms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+    width: 100%;
+}
+
+/* Tarjeta Premium */
+.form-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+    min-height: 280px;
+    /* Asegura altura mínima consistente */
+}
+
+.form-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.form-card.is-hidden {
+    opacity: 0.6;
+    filter: grayscale(0.5);
+    background: rgba(241, 245, 249, 0.4);
+}
+
+.form-card.is-hidden:hover {
+    opacity: 0.9;
+    filter: grayscale(0.2);
+}
+
+.form-card-head {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.form-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--secondary);
+    line-height: 1.4;
+}
+
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+}
+
+.user-id-badge {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--secondary);
+    background: rgba(0, 0, 0, 0.05);
+    padding: 4px 8px;
+    border-radius: 6px;
+    opacity: 0.7;
+}
+
+.inline-form {
+    display: inline-flex;
+    margin: 0;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 12px;
+    height: 36px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn-edit {
+    background: #f1f5f9;
+    color: var(--secondary);
+}
+
+.btn-edit:hover {
+    background: #e2e8f0;
+}
+
+.btn-delete {
+    background: #fef2f2;
+    color: var(--danger);
+}
+
+.btn-delete:hover {
+    background: #fee2e2;
+}
+
+.btn-visibility {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+}
+
+.btn-duplicate {
+    background: #ecfdf5;
+    color: #059669;
+    border: 1px solid #d1fae5;
+}
+
+.btn-duplicate:hover {
+    background: #d1fae5;
+    border-color: #10b981;
+    transform: translateY(-1px);
+}
+
+.icon-edit,
+.icon-delete,
+.icon-visibility {
+    height: 16px;
+    width: 16px;
+    object-fit: contain;
+}
+
+/* Cuerpo y Footer de la tarjeta */
+.form-card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-description {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.form-card-footer {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-responder {
+    background: var(--primary);
+    color: white !important;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+}
+
+.btn-responder:hover {
+    background: var(--primary-hover);
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.3);
+}
+
+/* Detalles ocultos premium */
+.form-details {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    padding: 0 12px;
+    margin: 0;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 12px;
+    font-size: 13px;
+    color: #475569;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+}
+
+.form-details.show {
+    max-height: 400px;
+    /* Suficiente para los detalles */
+    opacity: 1;
+    padding: 16px;
+    margin: 12px 0;
+    border-color: rgba(0, 0, 0, 0.05);
+}
+
+.form-details p {
+    margin: 6px 0;
+}
+
+.btn-toggle {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+}
+
+.btn-toggle:hover {
+    background: #f1f5f9;
+    color: var(--secondary);
+    border-color: #cbd5e1;
+}
+
+.btn-toggle[aria-expanded="true"] {
+    background: var(--secondary);
+    color: white;
+    border-color: var(--secondary);
+}
+
+/* Modales Premium */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: flex-start; /* Permite que el modal crezca hacia abajo */
+    justify-content: center;
+    z-index: 2100; /* Asegurar que esté por encima de todo */
+    padding: 2rem 1rem; 
+    overflow-y: auto; /* Habilita scroll si el contenido es muy alto */
+}
+
+.modal-backdrop.show {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: var(--shadow-xl);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    margin: auto; /* Centra el modal cuando el contenido es pequeño */
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 24px;
+}
+
+.modal-body label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+.modal-body input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    font-family: inherit;
+    margin-bottom: 24px;
+    transition: border-color 0.2s;
+}
+
+.modal-body input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+.btn-secondary-modal {
+    background: #f1f5f9;
+    color: #475569;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* Panel de Búsqueda y Filtros */
+.search-panel {
+    width: 100%;
+    max-width: 380px;
+    /* Width of a single card */
+    margin: 0 auto 40px auto;
+    /* Centered with bottom margin */
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-md);
+}
+
+.search-panel form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-group label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--secondary);
+    opacity: 0.8;
+}
+
+.filter-group input {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    font-family: inherit;
+    font-size: 14px;
+    transition: all 0.2s;
+    background: white;
+}
+
+.filter-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.filter-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+/* Botones de Exportación Premium */
+.btn-export {
+    font-weight: 700 !important;
+    padding: 10px 20px !important;
+    border-radius: 12px !important;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-csv {
+    background: #10b981 !important;
+    color: white !important;
+}
+
+.btn-gmail {
+    background: #f97316 !important;
+    color: white !important;
+}
+
+/* Specific for Responses Page */
+.ver-respuesta-btn {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: #6366f1;
+    font-weight: 700;
+}
+
+.ver-respuesta-btn:hover {
+    background: #eef2ff;
+    border-color: #6366f1;
+    color: #4f46e5;
+}
+
+/* Modal Respuesta */
+.modal-respuesta-content {
+    max-width: 800px !important;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-respuesta-body {
+    padding-top: 0;
+    overflow-y: auto;
+}
+
+.respuesta-form-header {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    border-left: 4px solid var(--primary);
+}
+
+.respuesta-pregunta {
+    background: white;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.respuesta-pregunta-header {
+    margin-bottom: 8px;
+    font-size: 15px;
+    display: flex;
+    align-items: baseline;
+}
+
+.respuesta-pregunta-answer {
+    background: #fdfdfd;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #f8fafc;
+    color: #334155;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+    .forms-grid {
+        grid-template-columns: 1fr;
+    }
+}

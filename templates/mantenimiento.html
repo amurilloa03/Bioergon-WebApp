@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}Mantenimiento - Bioergon{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="forms-panel">
+        <section class="forms-list">
+            <div class="forms-header">
+                <h1>Mantenimiento del Sistema</h1>
+                <a href="/formularios" class="btn btn-secondary-modal">Volver a Formularios</a>
+            </div>
+
+            {% if errors %}
+            <div class="alert alert-danger"
+                style="background: #fee2e2; border: 1px solid #ef4444; padding: 16px; border-radius: 12px; margin-bottom: 24px;">
+                <h4 style="margin: 0 0 8px 0; color: #b91c1c;">Errores durante el mantenimiento:</h4>
+                <ul style="margin: 0; padding-left: 20px;">
+                    {% for error in errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if deleted_count > 0 %}
+            <div class="alert alert-success"
+                style="background: #d1fae5; border: 1px solid #10b981; padding: 16px; border-radius: 12px; margin-bottom: 24px; color: #065f46;">
+                ✓ Se han eliminado <strong>{{ deleted_count }}</strong> archivos huérfanos correctamente.
+            </div>
+            {% endif %}
+
+            <div class="maintenance-grid">
+                <!-- Columna Formularios -->
+                <article class="form-card">
+                    <div class="form-card-head">
+                        <h2 class="form-title">📁 Formularios Huérfanos</h2>
+                        <p class="form-description">Archivos .json en la carpeta /formularios que no están registrados
+                            en la base de datos.</p>
+                    </div>
+                    <div class="form-card-body">
+                        {% if orphans_forms %}
+                        <ul
+                            style="list-style: none; padding: 0; font-size: 13px; color: #64748b; max-height: 200px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px;">
+                            {% for f in orphans_forms %}
+                            <li>📄 {{ f }}</li>
+                            {% endfor %}
+                        </ul>
+                        <p style="margin-top: 10px; font-weight: bold; color: var(--danger);">Total: {{
+                            orphans_forms|length }}</p>
+                        {% else %}
+                        <p style="color: #10b981; font-weight: 600;">✨ No hay formularios huérfanos.</p>
+                        {% endif %}
+                    </div>
+                </article>
+
+                <!-- Columna Respuestas -->
+                <article class="form-card">
+                    <div class="form-card-head">
+                        <h2 class="form-title">📝 Respuestas Huérfanas</h2>
+                        <p class="form-description">Archivos .json en la carpeta /respuestas que no tienen un registro
+                            asociado.</p>
+                    </div>
+                    <div class="form-card-body">
+                        {% if orphans_resps %}
+                        <ul
+                            style="list-style: none; padding: 0; font-size: 13px; color: #64748b; max-height: 150px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px;">
+                            {% for r in orphans_resps %}
+                            <li>📄 {{ r }}</li>
+                            {% endfor %}
+                        </ul>
+                        <p style="margin-top: 10px; font-weight: bold; color: var(--danger);">Total: {{
+                            orphans_resps|length }}</p>
+                        {% else %}
+                        <p style="color: #10b981; font-weight: 600;">✨ No hay respuestas huérfanas.</p>
+                        {% endif %}
+                    </div>
+                </article>
+
+                <!-- Columna Avatares -->
+                <article class="form-card">
+                    <div class="form-card-head">
+                        <h2 class="form-title">👤 Avatares Huérfanos</h2>
+                        <p class="form-description">Fotos de perfil de usuarios que ya no existen en el sistema.</p>
+                    </div>
+                    <div class="form-card-body">
+                        {% if orphans_avatars %}
+                        <ul
+                            style="list-style: none; padding: 0; font-size: 13px; color: #64748b; max-height: 150px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px;">
+                            {% for a in orphans_avatars %}
+                            <li>🖼️ {{ a }}</li>
+                            {% endfor %}
+                        </ul>
+                        <p style="margin-top: 10px; font-weight: bold; color: var(--danger);">Total: {{
+                            orphans_avatars|length }}</p>
+                        {% else %}
+                        <p style="color: #10b981; font-weight: 600;">✨ Todos los avatares están en uso.</p>
+                        {% endif %}
+                    </div>
+                </article>
+
+                <!-- Columna Imágenes de Cuestionarios -->
+                <article class="form-card">
+                    <div class="form-card-head">
+                        <h2 class="form-title">🖼️ Fotos de Cuestionarios</h2>
+                        <p class="form-description">Imágenes subidas a preguntas que ya no pertenecen a ningún
+                            formulario.</p>
+                    </div>
+                    <div class="form-card-body">
+                        {% if orphans_images %}
+                        <ul
+                            style="list-style: none; padding: 0; font-size: 13px; color: #64748b; max-height: 150px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px;">
+                            {% for i in orphans_images %}
+                            <li>📎 {{ i }}</li>
+                            {% endfor %}
+                        </ul>
+                        <p style="margin-top: 10px; font-weight: bold; color: var(--danger);">Total: {{
+                            orphans_images|length }}</p>
+                        {% else %}
+                        <p style="color: #10b981; font-weight: 600;">✨ No hay fotos huérfanas.</p>
+                        {% endif %}
+                    </div>
+                </article>
+            </div>
+
+            {% if orphans_forms or orphans_resps or orphans_avatars or orphans_images %}
+            <div class="maintenance-action-panel">
+                <h3 style="margin-bottom: 8px;">¿Deseas limpiar el servidor?</h3>
+                <p style="color: #64748b; margin-bottom: 24px;">Esta acción eliminará físicamente los archivos listados
+                    arriba. No se puede deshacer.</p>
+                <form action="/admin/mantenimiento" method="get">
+                    <input type="hidden" name="confirm_delete" value="true">
+                    <button type="submit" class="btn btn-responder"
+                        style="background: var(--danger); padding: 12px 32px; font-size: 16px;">
+                        🗑️ Eliminar todos los archivos huérfanos
+                    </button>
+                </form>
+            </div>
+            {% else %}
+            <div
+                style="margin-top: 40px; text-align: center; padding: 40px; background: rgba(16, 185, 129, 0.05); border-radius: var(--radius-lg); border: 2px dashed #10b981;">
+                <h2 style="color: #059669;">✅ Sistema Limpio</h2>
+                <p style="color: #065f46;">No se han detectado archivos huérfanos en el servidor.</p>
+            </div>
+            {% endif %}
+        </section>
+    </div>
+</div>
+
+<style>
+    /* Rediseño de la Cuadrícula de Mantenimiento (2x2) */
+    .maintenance-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+
+    @media (max-width: 900px) {
+        .maintenance-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .maintenance-grid .form-card {
+        min-height: auto;
+        justify-content: flex-start;
+    }
+
+    .maintenance-action-panel {
+        margin-top: 2rem;
+        background: white;
+        padding: 32px;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        text-align: center;
+        width: 100%;
+        clear: both;
+    }
+</style>
+{% endblock %}

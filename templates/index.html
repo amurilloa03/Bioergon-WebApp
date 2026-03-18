@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Página de Inicio{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+<section class="index-hero" aria-labelledby="home-title">
+	<img class="index-logo" src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo">
+
+	<div class="index-card">
+		{% if error %}
+		<p class="form-error" role="alert" aria-live="assertive">{{ error }}</p>
+		{% endif %}
+
+		<!-- Contenedor para errores mostrados por validación client-side -->
+		<p id="client-error" class="form-error hidden" role="alert" aria-live="assertive"></p>
+
+		<form action="{{ url_for('login') }}" method="post" class="login-form">
+			<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+			<label for="user">Usuario o correo</label>
+			<input id="user" name="user" type="text" required placeholder="usuario o correo" class="login-input">
+
+			<label for="password">Contraseña</label>
+			<input id="password" name="password" type="password" required placeholder="contraseña" class="login-input">
+
+			<div class="login-actions">
+				<button type="submit" class="login-button">Entrar</button>
+				<a href="{{ url_for('register') }}" class="login-button secondary" role="button">Registrarse</a>
+			</div>
+
+			<div class="oauth-divider">
+				<span>o</span>
+			</div>
+			<a href="{{ url_for('google_login') }}" class="google-login-button">
+				<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo">
+				<span>Continuar con Google</span>
+			</a>
+		</form>
+
+	</div>
+</section>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const form = document.querySelector('.login-form');
+		if (!form) return;
+		const userInput = form.querySelector('#user');
+		const clientError = document.getElementById('client-error');
+		const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+		// remove error class on input
+		if (userInput) userInput.addEventListener('input', function () { userInput.classList.remove('input-error'); if (clientError) clientError.classList.add('hidden'); });
+
+		form.addEventListener('submit', function (e) {
+			if (userInput && userInput.value.includes('@')) {
+				const val = userInput.value.trim();
+				if (!emailPattern.test(val)) {
+					e.preventDefault();
+					clientError.textContent = 'El correo introducido no tiene formato válido.';
+					clientError.classList.remove('hidden');
+					userInput.classList.add('input-error');
+					userInput.focus();
+					return false;
+				}
+			}
+			// ocultar cualquier mensaje previo si pasa la validación
+			if (clientError) clientError.classList.add('hidden');
+			if (userInput) userInput.classList.remove('input-error');
+		});
+	});
+</script>
+{% endblock %}
+
+{% block footer %}
+<div class="footer-compact">
+	<div class="footer-compact-content">
+		<p class="footer-compact-copy">&copy; 2024 BioErgon. Todos los derechos reservados.</p>
+		<ul class="footer-compact-links">
+			<li><a href="#">Privacidad</a></li>
+			<li><a href="#">Términos</a></li>
+			<li><a href="#">Cookies</a></li>
+		</ul>
+	</div>
+</div>
+{% endblock %}

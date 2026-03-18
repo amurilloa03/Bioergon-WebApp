@@ -1,0 +1,454 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+
+:root {
+    /* Colores Premium */
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --secondary: #0f172a;
+    --accent: #8b5cf6;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+
+    /* Superficies y Cristal */
+    --glass-bg: rgba(255, 255, 255, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --glass-blur: blur(12px);
+
+    /* Sombras */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+    /* Otros */
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --header-height: 80px;
+    --container-width: 1200px;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-height: 100vh;
+    margin: 0;
+    background: #f8fafc;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--secondary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar Premium */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.2);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(99, 102, 241, 0.4);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(99, 102, 241, 0.2) transparent;
+}
+
+
+/* Fondo dinámico premium */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.1) 0, transparent 50%),
+        url("../images/fondo.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(40px) saturate(1.2);
+    /* Mucho más suave y difuminado */
+    transform: scale(1.1);
+    z-index: -2;
+}
+
+/* Capa de suavizado para luz y contraste */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(248, 250, 252, 0.4);
+    /* Overlay muy ligero basado en el color de fondo */
+    z-index: -1;
+}
+
+
+/* Asegurar jerarquía visual del contenido principal */
+main,
+header,
+footer {
+    position: relative;
+    /* Eliminamos z-index: 0 para evitar crear un stacking context que atrape a los modales */
+}
+
+/* Hacer que el main crezca y empuje el footer al final */
+main {
+    flex: 1 0 auto;
+}
+
+footer {
+    flex-shrink: 0;
+}
+
+
+/* Variables compartidas del sitio */
+:root {
+    --header-height: clamp(64px, 8vh, 100px);
+    --container-width: 1250px;
+    --container-vert-margin: clamp(.6rem, 2vh, 1.2rem);
+    --container-padding-inline: clamp(0.75rem, 2.4vw, 1.25rem);
+}
+
+/* Botones Premium Globales */
+.btn-responses {
+    background: #fdf4ff;
+    color: #a21caf;
+    border: 1px solid #f5d0fe;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-responses:hover {
+    background: #fae8ff;
+    border-color: #d946ef;
+    transform: translateY(-1px);
+}
+
+.btn-stats {
+    background: #f0f9ff;
+    color: #0369a1;
+    border: 1px solid #bae6fd;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-stats:hover {
+    background: #e0f2fe;
+    border-color: #0ea5e9;
+    transform: translateY(-1px);
+}
+
+/* Modal respuesta styles were moved to forms.css for better organization */
+
+.respuesta-info {
+    color: #999;
+    font-size: 0.85rem;
+}
+
+/* =========================================================================
+   PERFIL HERO DESIGN
+   ========================================================================= */
+.profile-page {
+    width: 100%;
+    position: relative;
+    padding-bottom: 60px;
+}
+
+.profile-hero {
+    width: 100%;
+    height: 180px;
+    /* Estrechar la parte morada */
+    background: linear-gradient(135deg, #a78bfa 0%, #6366f1 100%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.profile-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at right top, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+    z-index: 2;
+}
+
+/* Olas negras en la parte inferior del hero */
+.profile-hero::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNDQwIDMyMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PHBhdGggZmlsbD0icmdiYSgwLDAsMCwwLjMpIiBkPSJNMiwxOTJMNDgsMTgxLjNDOTYsMTcxLDE5MiwxNDksMjg4LDE0NEMzODQsMTM5LDQ4MCwxNDksNTc2LDE3MC43QzY3MiwxOTIsNzY4LDIyNCw4NjQsMjEzLjNDOTYwLDIwMywxMDU2LDE0OSwxMTUyLDE0NEMxMjQ4LDEzOSwxMzQ0LDE4MSwxMzkyLDIwMi43TDE0NDAsMjI0TDE0NDAsMzIwTDEzOTIsMzIwQzEzNDQsMzIwLDEyNDgsMzIwLDExNTIsMzIwQzEwNTYsMzIwLDk2MCwzMjAsODY0LDMyMEM3NjgsMzIwLDY3MiwzMjAsNTc2LDMyMEM0ODAsMzIwLDM4NCwzMjAsMjg4LDMyMEMxOTIsMzIwLDk2LDMyMCw0OCwzMjBMMCwzMjBaIi8+PC9zdmc+");
+    background-size: 100% 100%;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    z-index: 10;
+}
+
+.profile-page .container.relative {
+    position: relative;
+    z-index: 10;
+    padding-top: 90px;
+    /* Ajustado por la menor altura del banner */
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.profile-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px 30px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4));
+}
+
+.avatar-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 20px;
+    border: 4px solid white;
+}
+
+.profile-name {
+    margin: 0 0 10px 0;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--secondary);
+    text-align: center;
+    letter-spacing: -0.02em;
+}
+
+.profile-badges {
+    display: flex;
+    gap: 8px;
+}
+
+.badge-admin {
+    background: #e0e7ff;
+    color: #4f46e5;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.badge-user {
+    background: #f1f5f9;
+    color: #64748b;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.profile-body {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.profile-info-col,
+.profile-action-col {
+    flex: 1 1 350px;
+    padding: 40px;
+}
+
+.profile-info-col {
+    border-right: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.col-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #475569;
+    margin: 0 0 24px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.info-icon {
+    font-size: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.info-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-bottom: 2px;
+}
+
+.info-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--secondary);
+}
+
+.action-desc {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-primary-hero {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    width: 100%;
+}
+
+.btn-primary-hero:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.3);
+}
+
+.btn-secondary-hero {
+    background: transparent;
+    color: #4f46e5;
+    border: 2px solid #e0e7ff;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+    width: 100%;
+    display: block;
+}
+
+.btn-secondary-hero:hover {
+    background: #eef2ff;
+    border-color: #c7d2fe;
+}
+
+.profile-alert.success {
+    margin-top: 20px;
+    background: #ecfdf5;
+    color: #059669;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid #a7f3d0;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .profile-info-col {
+        border-right: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .profile-info-col,
+    .profile-action-col {
+        padding: 24px;
+    }
+
+    .profile-page .container.relative {
+        padding-top: 80px;
+    }
+}

@@ -1,0 +1,140 @@
+/* Header specific styles (moved from styles.css) */
+
+header {
+    height: var(--header-height);
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 10px 0;
+}
+
+.site-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0 24px;
+    height: 64px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--glass-border);
+    border-radius: 0;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.site-header-inner:hover {
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-1px);
+}
+
+.site-header-inner .logo {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    width: 48px;
+    background: transparent;
+    padding: 2px;
+}
+
+.site-header-inner .logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 16px;
+    text-decoration: none;
+    color: var(--secondary);
+    background: transparent;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--primary);
+}
+
+.nav-btn i,
+.nav-btn span {
+    font-size: 1.1em;
+}
+
+.nav-btn.active {
+    background: var(--primary);
+    color: white;
+}
+
+.home-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.profile-link {
+    margin-left: 8px;
+    transition: transform 0.2s;
+}
+
+.profile-link:hover {
+    transform: scale(1.1);
+}
+
+.home-img {
+    height: 24px;
+    width: 24px;
+    object-fit: contain;
+    transition: transform 0.2s;
+}
+
+.home-link:hover .home-img {
+    transform: scale(1.1);
+}
+
+.profile-img {
+    height: 28px;
+    width: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: var(--shadow-sm);
+}
+
+
+/* Small screens: header specific adjustments */
+@media (max-width: 420px) {
+    .site-header-inner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+
+    .main-nav {
+        justify-content: flex-end;
+    }
+
+    .nav-btn {
+        width: auto;
+    }
+}

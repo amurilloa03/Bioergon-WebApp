@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: bioergon-app
+    env: python
+    buildCommand: |
+      pip install -r requirements.txt
+      cd form_builder && npm install --legacy-peer-deps && npm run build
+      cd ..
+    plan: free
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: FLASK_SECRET_KEY
+        generateValue: true
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GMAIL_USER
+        sync: false
+      - key: GMAIL_APP_PASSWORD
+        sync: false
