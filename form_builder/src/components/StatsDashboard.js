@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,7 +13,7 @@ import {
   LineElement,
   Filler
 } from 'chart.js';
-import { Bar, Pie, Doughnut, Radar } from 'react-chartjs-2';
+import { Bar, Doughnut, Radar } from 'react-chartjs-2';
 
 
 ChartJS.register(
@@ -42,7 +42,7 @@ const StatsDashboard = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const formId = urlParams.get('form_id');
 
-  const fetchStats = () => {
+  const fetchStats = useCallback(() => {
     if (!formId) {
       setError("No se proporcionó ID de formulario");
       setLoading(false);
@@ -72,11 +72,11 @@ const StatsDashboard = () => {
         setError(err.message);
         setLoading(false);
       });
-  };
+  }, [formId, filters]);
 
   useEffect(() => {
     fetchStats();
-  }, [formId, filters]); // Added filters to dependencies
+  }, [fetchStats]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
