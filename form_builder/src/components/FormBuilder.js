@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "../styles/FormBuilder.css";
-import SelectorEspalda from './SelectorEspalda';
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 function FormBuilder() {
